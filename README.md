@@ -1,2 +1,2 @@
 # menoci_go
-Rewrite of [menoci](menoci.io) in golang.
+Rewrite of [menoci](https://menoci.io) in golang.
