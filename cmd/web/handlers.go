@@ -1,10 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/Linus4/menoci_go/pkg/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +41,17 @@ func (app *application) showPublication(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	fmt.Fprintf(w, "Display a specific publication with ID %d...", id)
+	p, err := app.publications.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%v", p)
 }
 
 func (app *application) createPublication(w http.ResponseWriter, r *http.Request) {
@@ -48,5 +61,15 @@ func (app *application) createPublication(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	w.Write([]byte("Create a new publication"))
+	title := "O snail"
+	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n- Kobayashi Issa"
+	expires := "7"
+
+	id, err := app.publications.Insert(title, content, expires)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/publication?id=%d", id), http.StatusSeeOther)
 }
