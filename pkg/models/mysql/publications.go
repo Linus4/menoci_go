@@ -32,11 +32,8 @@ func (m *PublicationModel) Get(id int) (*models.Publication, error) {
 	stmt := `SELECT id, title, content, created, expires FROM publications
 	WHERE expires > UTC_TIMESTAMP() AND id = ?`
 
-	row := m.DB.QueryRow(stmt, id)
-
 	p := &models.Publication{}
-
-	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.Created, &p.Expires)
+	err := m.DB.QueryRow(stmt, id).Scan(&p.ID, &p.Title, &p.Content, &p.Created, &p.Expires)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, models.ErrNoRecord
