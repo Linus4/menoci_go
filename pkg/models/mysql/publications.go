@@ -46,5 +46,29 @@ func (m *PublicationModel) Get(id int) (*models.Publication, error) {
 }
 
 func (m *PublicationModel) Latest() ([]*models.Publication, error) {
-	return nil, nil
+	stmt := `SELECT id, title, content, created, expires FROM publications
+	WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT 10`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	publications := []*models.Publication{}
+
+	for rows.Next() {
+		p := &models.Publication{}
+		err = rows.Scan(&p.ID, &p.Title, &p.Content, &p.Created, &p.Expires)
+		if err != nil {
+			return nil, err
+		}
+		publications = append(publications, p)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return publications, nil
 }
