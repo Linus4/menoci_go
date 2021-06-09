@@ -1,4 +1,4 @@
-module github.com/Linus4/mencoi_go
+module github.com/Linus4/menoci_go
 
 go 1.15
 

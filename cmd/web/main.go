@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Linus4/mencoi_go/pkg/models/mysql"
+	"github.com/Linus4/menoci_go/pkg/models/mysql"
 	_ "github.com/go-sql-driver/mysql"
 )
 

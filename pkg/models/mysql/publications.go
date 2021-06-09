@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/Linus4/mencoi_go/pkg/models"
+	"github.com/Linus4/menoci_go/pkg/models"
 )
 
 type PublicationModel struct {
