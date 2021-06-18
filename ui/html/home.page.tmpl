@@ -13,7 +13,7 @@
     </tr>
     {{range .Publications}}
     <tr>
-        <td><a href="/publication?id={{.ID}}">{{.Title}}</a></td>
+        <td><a href="/publication/{{.ID}}">{{.Title}}</a></td>
         <td>{{humanDate .Created}}</td>
         <td>#{{.ID}}</td>
     </tr>

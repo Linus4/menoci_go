@@ -3,19 +3,21 @@ package main
 import (
 	"net/http"
 
+	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 )
 
 func (app *application) routes() http.Handler {
 	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/publication", app.showPublication)
-	mux.HandleFunc("/publication/create", app.createPublication)
+	mux := pat.New()
+	mux.Get("/", http.HandlerFunc(app.home))
+	mux.Get("/publication/create", http.HandlerFunc(app.createPublicationForm))
+	mux.Post("/publication/create", http.HandlerFunc(app.createPublication))
+	mux.Get("/publication/:id", http.HandlerFunc(app.showPublication))
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+	mux.Get("/static/", http.StripPrefix("/static", fileServer))
 
 	return standardMiddleware.Then(mux)
 }
