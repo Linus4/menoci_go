@@ -2,6 +2,7 @@ package main
 
 import (
 	"html/template"
+	"net/url"
 	"path/filepath"
 	"time"
 
@@ -14,6 +15,8 @@ var functions = template.FuncMap{
 
 type templateData struct {
 	CurrentYear  int
+	FormData     url.Values
+	FormErrors   map[string]string
 	Publication  *models.Publication
 	Publications []*models.Publication
 }
