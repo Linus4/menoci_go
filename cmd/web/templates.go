@@ -2,10 +2,10 @@ package main
 
 import (
 	"html/template"
-	"net/url"
 	"path/filepath"
 	"time"
 
+	"github.com/Linus4/menoci_go/pkg/forms"
 	"github.com/Linus4/menoci_go/pkg/models"
 )
 
@@ -15,8 +15,7 @@ var functions = template.FuncMap{
 
 type templateData struct {
 	CurrentYear  int
-	FormData     url.Values
-	FormErrors   map[string]string
+	Form         *forms.Form
 	Publication  *models.Publication
 	Publications []*models.Publication
 }
